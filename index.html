@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <script>!function(N,M){function L(){var a=I.getBoundingClientRect().width;a/F>540&&(a=540*F);var d=a/10;I.style.fontSize=d+"px",D.rem=N.rem=d}var K,J=N.document,I=J.documentElement,H=J.querySelector('meta[name="viewport"]'),G=J.querySelector('meta[name="flexible"]'),F=0,E=0,D=M.flexible||(M.flexible={});if(H){console.warn("将根据已有的meta标签来设置缩放比例");var C=H.getAttribute("content").match(/initial\-scale=([\d\.]+)/);C&&(E=parseFloat(C[1]),F=parseInt(1/E))}else{if(G){var B=G.getAttribute("content");if(B){var A=B.match(/initial\-dpr=([\d\.]+)/),z=B.match(/maximum\-dpr=([\d\.]+)/);A&&(F=parseFloat(A[1]),E=parseFloat((1/F).toFixed(2))),z&&(F=parseFloat(z[1]),E=parseFloat((1/F).toFixed(2)))}}}if(!F&&!E){var y=N.navigator.userAgent,x=(!!y.match(/android/gi),!!y.match(/iphone/gi)),w=x&&!!y.match(/OS 9_3/),v=N.devicePixelRatio;F=x&&!w?v>=3&&(!F||F>=3)?3:v>=2&&(!F||F>=2)?2:1:1,E=1/F}if(I.setAttribute("data-dpr",F),!H){if(H=J.createElement("meta"),H.setAttribute("name","viewport"),H.setAttribute("content","initial-scale="+E+", maximum-scale="+E+", minimum-scale="+E+", user-scalable=no"),I.firstElementChild){I.firstElementChild.appendChild(H)}else{var u=J.createElement("div");u.appendChild(H),J.write(u.innerHTML)}}N.addEventListener("resize",function(){clearTimeout(K),K=setTimeout(L,300)},!1),N.addEventListener("pageshow",function(b){b.persisted&&(clearTimeout(K),K=setTimeout(L,300))},!1),"complete"===J.readyState?J.body.style.fontSize=12*F+"px":J.addEventListener("DOMContentLoaded",function(){J.body.style.fontSize=12*F+"px"},!1),L(),D.dpr=N.dpr=F,D.refreshRem=L,D.rem2px=function(d){var c=parseFloat(d)*this.rem;return"string"==typeof d&&d.match(/rem$/)&&(c+="px"),c},D.px2rem=function(d){var c=parseFloat(d)/this.rem;return"string"==typeof d&&d.match(/px$/)&&(c+="rem"),c}}(window,window.lib||(window.lib={}));</script>
+    <style>
+       html,body{
+         padding: 0;
+         margin: 0;
+       }
+    </style>
+    <title>React App</title>
+  </head>
+  <body>
+    <div id="demo"></div>
+    <script type="text/javascript">
+    
+      const carousel = (function(){
+
+          let curIndex = 0;
+          const screenWidth = window.innerWidth;
+          let maxIndex = 0;
+
+          const arrowsBind = () => {
+              const content = document.querySelector(".content");
+              const leftArrow = document.querySelector(".leftArrow");
+              const rightArrow = document.querySelector(".rightArrow");
+              leftArrow.addEventListener("click",() => {
+                  curIndex--;
+                  if(curIndex < 0) curIndex = maxIndex - 1;
+                  content.style.left = `-${curIndex * screenWidth}px`;
+
+              })
+              rightArrow.addEventListener("click",() => {
+                   curIndex++;
+                   if(curIndex >= maxIndex) curIndex = 0;
+                   content.style.left = `-${curIndex * screenWidth}px`;
+              })
+          }
+
+          const arrows = () => {
+              const commonStyle = `width: 40px; height: 40px; border-radius: 20px; background: #ddd; text-align: center; line-height: 40px; position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;  user-select:none;`
+              const leftArrowStyle = `left: 10px;`
+              const rightArrowStyle = `right: 10px;`
+              const leftArrow = `<div class="leftArrow" style="${commonStyle}${leftArrowStyle}">左</div>`
+              const rightArrow = `<div class="rightArrow" style="${commonStyle}${rightArrowStyle}">右</div>`
+              return `<div class="arrows">${leftArrow}${rightArrow}</div>`
+          }
+
+          const content = (imgs) => {
+              const contentStyle = `height: 100%; white-space: nowrap; transition: all ease 0.5s; position: absolute; left: 0;`;
+              let itemStr = '';
+              imgs.forEach(v => {
+                  itemStr+=item(v)
+              })
+              return `<div class="content" style="${contentStyle}">${itemStr}</div>`;
+          }
+
+          const item = (img) => {
+              const itemStyle = `width: ${screenWidth}px; height: 100%; display: inline-block; border`;
+              return `<div style="${itemStyle}"><img src="${img}" style="width: 100%; height: 100%;"/></div>`;
+          }
+
+          const init = ( imgs, speed, parentEle ) => {
+              maxIndex = imgs.length;
+              const containerStyle = `width: 100%; max-height: 150px; height: 150px; position: relative; overflow: hidden;`;
+              const containerTamp = `<div style="${containerStyle}">${content(imgs)}${arrows()}</div>`;
+              document.querySelector(parentEle).innerHTML = containerTamp;
+              window.onload = arrowsBind();
+          }
+
+          return{
+              init: init,
+          };
+      })()
+
+      carousel.init([`http://h.hiphotos.baidu.com/image/h%3D300/sign=973e5976f7f2b211fb2e834efa806511/bd315c6034a85edf0ab7c12645540923dd5475ff.jpg`,`http://a.hiphotos.baidu.com/image/h%3D300/sign=a18b980dbd3533faeab6952e98d3fdca/9f510fb30f2442a76160eca6dd43ad4bd1130242.jpg`,`http://d.hiphotos.baidu.com/image/h%3D300/sign=50bb22ee6ed9f2d33f1122ef99ec8a53/3bf33a87e950352aed1338075f43fbf2b2118b4a.jpg`],500,`#demo`);
+
+    </script>
+  </body>
+</html>
