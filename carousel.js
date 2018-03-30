@@ -28,8 +28,8 @@ const arrows = () => {
 	return `<div class="arrows">${leftArrow}${rightArrow}</div>`
 }
 
-const content = (imgs) => {
-	const contentStyle = `height: 100%; white-space: nowrap; transition: all ease 0.5s; position: absolute; left: 0;`;
+const content = (imgs, speed) => {
+	const contentStyle = `height: 100%; white-space: nowrap; transition: all ease ${speed}s; position: absolute; left: 0;`;
 	let itemStr = '';
 	imgs.forEach(v => {
 	  	itemStr+=item(v)
@@ -45,7 +45,7 @@ const item = (img) => {
 export const carousel = ( imgs, speed, parentEle ) => {
 	maxIndex = imgs.length;
 	const containerStyle = `width: 100%; max-height: 150px; height: 150px; position: relative; overflow: hidden;`;
-	const containerTamp = `<div style="${containerStyle}">${content(imgs)}${arrows()}</div>`;
+	const containerTamp = `<div style="${containerStyle}">${content(imgs, speed)}${arrows()}</div>`;
 	document.querySelector(parentEle).innerHTML = containerTamp;
 	window.onload = arrowsBind();
 }
